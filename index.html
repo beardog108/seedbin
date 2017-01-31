@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!--
+    Copyright 2017 Kevin Froman, MIT license (expat)
+    -->
+    <meta name='description' content='Distributed Pastebin'>
+    <meta name='author' content='Kevin Froman (beardog)'>
+    <title>SeedBin</title>
+    <link rel='stylesheet' href='modal.css'>
+    <link rel='stylesheet' href='theme.css'>
+    <script src='jquery-3.1.1.min.js'></script>
+    <script src='webtorrent.min.js'></script>
+    <script src='clipboard.min.js'></script>
+    <script src='notify.min.js'></script>
+    <script src='modal.js'></script>
+  </head>
+  <body>
+    <section class="modal--show" id="modal-text" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+        <div class="modal-inner">
+            <header id="modal-label"><h1 class='center'>Now Seeding Paste</h1></header>
+            <div class="modal-content">
+              <p>Congrats! Your paste is now seeding.</p>
+              <label>Share link: <input readonly id='shareLink'></label>
+              <button class="btn" data-clipboard-target="#shareLink">
+                Copy
+              </button>
+              <br><br>
+              <label>Info hash: <input readonly id='infoHash'></label>
+              <button class="btn" data-clipboard-target="#infoHash">
+                Copy
+              </button>
+              <br><br>
+              Current Peers: <span id='peerCount'>0</span>
+            </div>
+        </div>
+        <a href="#!" class="modal-close" title="Close this modal" data-close="Close" data-dismiss="modal">?</a>
+    </section>
+    <h1 class='center'>SeedBin</h1>
+    <div class='center'>
+      <form onsubmit='return createPaste();'>
+        <label>Title: <input type='text' id='title' required></label>
+        <br><br>
+        paste text:
+        <br><br>
+        <textarea required maxlength='1000000000' id='text'></textarea>
+        <br><br>
+        <input type='submit' id='submit' value='Create Paste'>
+      </form>
+  </div>
+  <footer>A project by <a href='https://chaoswebs.net/'>Kevin Froman</a>.</footer>
+  <script src='index.js'></script>
+  </body>
+</html>

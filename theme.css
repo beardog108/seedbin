@@ -1,0 +1,93 @@
+/*
+Copyright 2017 Kevin Froman, MIT license (expat)
+*/
+html{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.center{
+  text-align: center;
+}
+
+#text{
+  width: 50%;
+  height: 200px;
+}
+
+#submit {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  -webkit-border-radius: 12;
+  -moz-border-radius: 12;
+  border-radius: 12px;
+  -webkit-box-shadow: 0px 1px 3px #666666;
+  -moz-box-shadow: 0px 1px 3px #666666;
+  box-shadow: 0px 1px 3px #666666;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  border: solid #1f628d 2px;
+  text-decoration: none;
+}
+
+#submit:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
+#output{
+  margin-left: 15%;
+  margin-right: 15%;
+  padding: 5px;
+  border: 2px solid black;
+  border-radius: 5px;
+  display: none;
+  overflow-x: scroll;
+  -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+@media only screen and (max-device-width : 640px) {
+	#output {
+		margin-left: 5%;
+    margin-right: 5%;
+	}
+}
+
+footer{
+position: relative;
+left: 0;
+right: 0;
+bottom: 0;
+top: 100%;
+padding-top: 4em;
+text-align: center;
+display: none;
+}
+
+#pasteTitle{
+  display: none;
+}
