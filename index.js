@@ -30,7 +30,7 @@ function createPaste(){
     window.location = '#' + 'modal-text';
     console.log(torrent.magnetURI);
     $('#infoHash').val(torrent.infoHash);
-    $('#shareLink').val(location.protocol+'//'+location.host+location.pathname + 'view.html#' + torrent.infoHash);
+    $('#shareLink').val(location.protocol+'//'+location.host+location.pathname.replace('index.html', '') + 'view.html#' + torrent.infoHash);
     setInterval(peerCount, 1000, torrent.infoHash);
   });
   return false;
