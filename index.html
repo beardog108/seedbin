@@ -3,54 +3,46 @@
   <head>
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <!--
-    Copyright 2017 Kevin Froman, MIT license (expat)
-    -->
-    <meta name='description' content='Distributed Pastebin'>
-    <meta name='author' content='Kevin Froman (beardog)'>
+    <meta name='description' content='Fast & free distributed decentralized pastebin'>
     <title>SeedBin</title>
+    <link rel='icon' href='favicon.png'>
+    <link rel='stylesheet' href='min.css'>
     <link rel='stylesheet' href='modal.css'>
+    <link rel='stylesheet' href='jquery.growl.css'>
     <link rel='stylesheet' href='theme.css'>
-    <script src='jquery-3.1.1.min.js'></script>
+    <script src='jquery.min.js'></script>
     <script src='webtorrent.min.js'></script>
-    <script src='clipboard.min.js'></script>
-    <script src='notify.min.js'></script>
-    <script src='modal.js'></script>
+    <script src='modal.min.js'></script>
+    <script src='jquery.growl.js'></script>
+    <script src='seedbin.js'></script>
   </head>
   <body>
-    <section class="modal--show" id="modal-text" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+    <section class="modal--show" id="show-paste" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
         <div class="modal-inner">
-            <header id="modal-label"><h1 class='center'>Now Seeding Paste</h1></header>
+            <header id="modal-label"><h1>Your Paste Is Ready!</h1></header>
             <div class="modal-content">
-              <p>Congrats! Your paste is now seeding.</p>
-              <label>Share link: <input readonly id='shareLink'></label>
-              <button class="btn" data-clipboard-target="#shareLink">
-                Copy
-              </button>
-              <br><br>
-              <label>Info hash: <input readonly id='infoHash'></label>
-              <button class="btn" data-clipboard-target="#infoHash">
-                Copy
-              </button>
-              <br><br>
-              Current Peers: <span id='peerCount'>0</span>
+              <pre id='pasteOutput'></pre>
+            </div>
+        </div>
+        <a href="#!" class="modal-close" title="Close this modal" data-close="Close" data-dismiss="modal">?</a>
+    </section>
+    <section class="modal--show" id="show-links" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+        <div class="modal-inner">
+            <header id="modal-label"><h1>Share Links</h1></header>
+            <div class="modal-content">
+              <label>IPFS: <input readonly id='ipfsHash' type='text'></label><br><br>
+              <label>WebTorrent: <input readonly id='webtorrentHash' type='text'></label><br><br>
+              <label>Share: <input readonly id='shareURI' type='text'></label>
             </div>
         </div>
         <a href="#!" class="modal-close" title="Close this modal" data-close="Close" data-dismiss="modal">?</a>
     </section>
     <h1 class='center'>SeedBin</h1>
-    <div class='center'>
-      <form onsubmit='return createPaste();'>
-        <label>Title: <input type='text' id='title' required></label>
-        <br><br>
-        paste text:
-        <br><br>
-        <textarea required maxlength='1000000000' id='text'></textarea>
-        <br><br>
-        <input type='submit' id='submit' value='Create Paste'>
-      </form>
-  </div>
-  <footer>A project by <a href='https://chaoswebs.net/'>Kevin Froman</a>.</footer>
-  <script src='index.js'></script>
+    <form method='post' id='pasteform'>
+      <div class='center'><textarea class='formItem smooth' name='text' required id='text' maxlength='5242880'></textarea></div>
+      <br><br>
+      <div class='center'><input id='submit' type='submit' value='Share' class='btn btn-a formItem'></div>
+    </form>
+    <footer class='center'><p>Made by <a href='https://www.chaoswebs.net'>Kevin Froman</a></p><span style="color: orange;">Ƀ</span>itcoin: <a style="color: black;" href='1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU'>1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU</a></footer>
   </body>
 </html>
