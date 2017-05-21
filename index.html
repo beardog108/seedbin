@@ -44,7 +44,11 @@
       <div class='center'><input id='submit' type='submit' value='Share' class='btn btn-a'></div>
     </form>
     <footer class='center'>
-      <div id='localDetected' class='center'>❌ No local gateway detected (will use fallback)!</div>
+      <div class='center'><label>Server & fallback gateway: <input class='smooth' id='serverURI' placeholder='Server URL' type='text'></label></div>
+        <br>
+      <p id='serverUp' class='center'>❌ Connection with server not established</p>
+      <p id='localDetected' class='center'>❌ No local gateway detected (will use fallback)!</p>
+      <p id='webrtc' class='center'>❌ No WebRTC (no WebTorrent)</p>
       <p>🖤 Made by <a href='https://www.chaoswebs.net'>Kevin Froman</a></p><span style="color: orange;">Ƀ</span>itcoin: <a style="color: black;" href='bitcoin:1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU'>1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU</a></footer>
   </body>
 </html>

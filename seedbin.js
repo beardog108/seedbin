@@ -7,6 +7,14 @@ function isJsonString(str){
     return true;
 }
 
+function checkServer(){
+  $.get(localStorage['seedbinURI']).done(function(data){
+    $('#serverUp').text('✅ Connection with server established');
+  }).fail(function(data){
+    $('#serverUp').text('❌ Connection with server not established');
+  });
+}
+
 function doTorrent(infoHash){
   //client = new WebTorrent();
   infoHash = 'magnet:?xt=urn:btih:' + infoHash + '&dn=Unnamed+Torrent+1495319406728&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com';
@@ -88,10 +96,22 @@ var hash = '';
 var ipfsHash = '';
 var webrtc = false;
 var loc = location.protocol+'//'+location.hostname+(location.port?":"+location.port:"")+location.pathname+(location.search?location.search:"");
-//var settings = {'detectLocal',}
-
 
 window.onload = function() {
+  $('#serverURI').on('change', function(){
+    submitURI = $('#serverURI').val();
+    requestURI = $('#serverURI').val();
+    localStorage['seedbinURI'] = $('#serverURI').val();
+    console.log('changed uri');
+    checkServer();
+  });
+  if (localStorage['seedbinURI'] == undefined){
+    localStorage['seedbinURI'] = 'https://www.chaoswebs.net/ipfs-paste/paste.php';
+  }
+  $('#serverURI').val(localStorage['seedbinURI']);
+  submitURI = $('#serverURI').val();
+  requestURI = $('#serverURI').val();
+  checkServer();
   $.ajax({url: 'http://127.0.0.1:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg?v=' + Math.random(),
         success: function (data, textstatus, xhr) {
           localInstall = true;
@@ -106,6 +126,7 @@ window.onload = function() {
   if (WebTorrent.WEBRTC_SUPPORT) {
     webrtc = true;
     client = new WebTorrent();
+    $('#webrtc').text('✅ WebRTC Available');
   } else {
     $.growl.warning({ message: 'Browser has no WebRTC support<br><br>You will not be able to use WebTorrent!' });
   }
@@ -150,7 +171,12 @@ window.onload = function() {
           }
         },
         error: function(data, textstatus, xhr) {
+          if (data.responseText == undefined){
+            $.growl.warning({message: 'Server is down :(, will use WebTorrent'})
+          }
+          else{
           $.growl.warning({message: data.responseText.replace('data: ', '') });
+          }
           $('#submit').css('display', 'inline');
           showOutput('links', data, infoHash);
     	      }
