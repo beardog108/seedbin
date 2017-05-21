@@ -1,4 +1,4 @@
-function isJsonString(str) {
+function isJsonString(str){
     try {
         JSON.parse(str);
     } catch (e) {
@@ -7,14 +7,62 @@ function isJsonString(str) {
     return true;
 }
 
-function showOutput(dataType, data){
+function doTorrent(infoHash){
+  //client = new WebTorrent();
+  infoHash = 'magnet:?xt=urn:btih:' + infoHash + '&dn=Unnamed+Torrent+1495319406728&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com';
+  console.log('wat: ' + infoHash);
+  client.add(infoHash, function (torrent) {
+        torrent.on('done', function(){
+          var file2 = torrent.files[0];
+          file2.getBuffer(function (err, buffer){
+            console.log('client is downloading: ' + infoHash);
+            buffer = buffer.toString('utf8');
+            $('#pasteOutput').text(buffer);
+            console.log('buffer: ' + buffer);
+          });
+          console.log('done downloading ' + torrent.infoHash);
+          window.location = loc + '#show-paste';
+        });
+  });
+}
+
+function getData(link, infoHash, torrentOnly){
+  if (torrentOnly){
+    console.log('is torrent only');
+    doTorrent(infoHash);
+    return;
+  }
+  if (localInstall){
+    link = 'http://127.0.0.1:8080/ipfs/' + link;
+  }
+  else{
+    link = requestURI + '?cat=' + link;
+  }
+  $.get(link).done(function(data){
+    $('#pasteOutput').text(data);
+    showOutput('paste', data);
+  }).fail(function(data){
+    $.growl.error('Could not get data from IPFS gateway(s), attempting WebTorrent');
+    doTorrent(infoHash);
+})}
+
+function showOutput(dataType, ipfs, torrent){
   var shareLink = '';
   switch (dataType){
     case 'links':
-      shareLink = '#{"ipfs":"' + data[0] + '","torrent":"' + data[1] +'"}';
-      console.log(data);
-      $('#ipfsHash').val(data[0]);
-      $('#webtorrentHash').val(data[1]);
+      console.log(ipfs + ' - ' + torrent);
+      if (ipfs.length != 46){
+        ipfs = '';
+      }
+      else{
+        ipfs = ipfs + ',';
+      }
+      if (torrent.length != 40){
+        torrent = '';
+      }
+      shareLink = '#' + ipfs + torrent;
+      $('#ipfsHash').val(ipfs);
+      $('#webtorrentHash').val(torrent);
       $('#shareURI').val(loc + shareLink);
       window.location = loc + '#show-links';
       return;
@@ -23,15 +71,16 @@ function showOutput(dataType, data){
       window.location = loc + '#show-paste';
       return;
     default:
-    alert('an error occured');
+    $.growl.error({ message: 'An error occured' });
     break;
   }
   window.location = loc + '#modal-text';
 }
 
-var localInstall = true;
+var localInstall = false;
 
 var submitURI = 'https://www.chaoswebs.net/ipfs-paste/paste.php';
+var requestURI = 'https://www.chaoswebs.net/ipfs-paste/paste.php';
 var file = '';
 var text = '';
 var fd = new FormData();
@@ -39,15 +88,21 @@ var hash = '';
 var ipfsHash = '';
 var webrtc = false;
 var loc = location.protocol+'//'+location.hostname+(location.port?":"+location.port:"")+location.pathname+(location.search?location.search:"");
+//var settings = {'detectLocal',}
+
+
 window.onload = function() {
   $.ajax({url: 'http://127.0.0.1:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg?v=' + Math.random(),
-      success: function (data, textstatus, xhr) {
-        localInstall = true;
-      },
-      error: function( xhr, status) {
-        localInstall = false;
-  	      }
-      });
+        success: function (data, textstatus, xhr) {
+          localInstall = true;
+          $('#localDetected').text('✅ Detected local gateway!');
+          if (location.protocol == 'https:'){$.growl.warning({message: 'This is a secure page.<br>There may be issues requesting localhost IPFS content.<br>Try disabling mixed content protection.'});}
+        },
+        error: function( xhr, status) {
+          localInstall = false;
+    	      }
+        });
+
   if (WebTorrent.WEBRTC_SUPPORT) {
     webrtc = true;
     client = new WebTorrent();
@@ -57,17 +112,14 @@ window.onload = function() {
   $('#pasteform').attr('submit', submitURI);
 
   if (document.location.hash != ''){
-    var shared = decodeURIComponent(document.location.hash.replace('#', ''));
-    if (isJsonString(shared)){
-      shared = $.parseJSON(shared);
-      console.log('ipfs: ' + shared.ipfs);
-      if (localInstall){
-        console.log('is local install, downloading');
-        $.get('http://127.0.0.1:8080/ipfs/' + shared.ipfs, function( data ) {
-          $('#pasteOutput').text(data);
-          showOutput('paste', data);
-        });
+    var dataToGet = document.location.hash.replace('#', '').split(',');
+    if (dataToGet.length == 1){
+      if (dataToGet[0].length == 40){
+      getData('', dataToGet[0], true);
       }
+    }
+    else{
+      getData(dataToGet[0], dataToGet[1], false);
     }
   }
 
@@ -89,20 +141,20 @@ window.onload = function() {
         success: function (data, textstatus, xhr) {
           console.log(data);
           if (data.startsWith('data:')){
-            data = data.replace('data:', '');
-            showOutput('links', [data, infoHash]);
+            data = data.replace('data: ', '');
+            showOutput('links', data, infoHash);
             $('#submit').css('display', 'inline');
           }
           else{
-            $.growl.error(data);
+            $.growl.error({ message: data});
           }
         },
-        error: function( xhr, status) {
-          $.growl.error('An error occured: ' + status);
+        error: function(data, textstatus, xhr) {
+          $.growl.warning({message: data.responseText.replace('data: ', '') });
           $('#submit').css('display', 'inline');
+          showOutput('links', data, infoHash);
     	      }
         });
     return false;
   }
-
 }

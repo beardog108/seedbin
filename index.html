@@ -19,16 +19,16 @@
   <body>
     <section class="modal--show" id="show-paste" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
         <div class="modal-inner">
-            <header id="modal-label"><h1>Your Paste Is Ready!</h1></header>
+            <header id="modal-label"><h2>Your Paste Is Ready!</h2></header>
             <div class="modal-content">
-              <pre id='pasteOutput'></pre>
+              <pre id='pasteOutput'>y tho</pre>
             </div>
         </div>
         <a href="#!" class="modal-close" title="Close this modal" data-close="Close" data-dismiss="modal">?</a>
     </section>
     <section class="modal--show" id="show-links" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
         <div class="modal-inner">
-            <header id="modal-label"><h1>Share Links</h1></header>
+            <header id="modal-label"><h2>Share Links</h2></header>
             <div class="modal-content">
               <label>IPFS: <input readonly id='ipfsHash' type='text'></label><br><br>
               <label>WebTorrent: <input readonly id='webtorrentHash' type='text'></label><br><br>
@@ -39,10 +39,12 @@
     </section>
     <h1 class='center'>SeedBin</h1>
     <form method='post' id='pasteform'>
-      <div class='center'><textarea class='formItem smooth' name='text' required id='text' maxlength='5242880'></textarea></div>
+      <div class='center'><textarea class='smooth' name='text' required id='text' maxlength='5242880'></textarea></div>
       <br><br>
-      <div class='center'><input id='submit' type='submit' value='Share' class='btn btn-a formItem'></div>
+      <div class='center'><input id='submit' type='submit' value='Share' class='btn btn-a'></div>
     </form>
-    <footer class='center'><p>Made by <a href='https://www.chaoswebs.net'>Kevin Froman</a></p><span style="color: orange;">Ƀ</span>itcoin: <a style="color: black;" href='1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU'>1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU</a></footer>
+    <footer class='center'>
+      <div id='localDetected' class='center'>❌ No local gateway detected (will use fallback)!</div>
+      <p>🖤 Made by <a href='https://www.chaoswebs.net'>Kevin Froman</a></p><span style="color: orange;">Ƀ</span>itcoin: <a style="color: black;" href='bitcoin:1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU'>1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU</a></footer>
   </body>
 </html>

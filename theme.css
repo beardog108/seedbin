@@ -1,6 +1,10 @@
-body{
-  user-select: none;
-  -moz-user-select: none;
+h1, h2{
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none
 }
 .center{
   text-align: center;
@@ -8,11 +12,13 @@ body{
 
 #text{
   width: 25%;
-  margin-left: 15%;
-  margin-right: 15%;
-  min-height: 200px;
+  height: 200px;
 }
 footer{
   padding-top: 3em;
   padding-bottom: 1em;
+}
+.formItem{
+  display: block;
+  margin-top: 1em;
 }

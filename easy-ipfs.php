@@ -67,10 +67,10 @@ class IPFS {
     $gotData = '';
     $server = curl_init();
 
-    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($server, CURLOPT_POST, 1);
     curl_setopt($server, CURLOPT_RETURNTRANSFER, true);
 
-    $data = array('file' => '@'. __DIR__ . $file);
+    $data = array('file' => new CurlFile($file));
 
     curl_setopt($server, CURLOPT_SAFE_UPLOAD, false); // required as of PHP 5.6.0
     curl_setopt($server, CURLOPT_POSTFIELDS, $data);
