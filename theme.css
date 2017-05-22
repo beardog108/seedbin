@@ -4,7 +4,7 @@ h1, h2, .center{
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none
+  user-select: none;
 }
 .center{
   text-align: center;

@@ -18,7 +18,6 @@ function checkServer(){
 function doTorrent(infoHash){
   //client = new WebTorrent();
   infoHash = 'magnet:?xt=urn:btih:' + infoHash + '&dn=Unnamed+Torrent+1495319406728&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com';
-  console.log('wat: ' + infoHash);
   client.add(infoHash, function (torrent) {
         torrent.on('done', function(){
           var file2 = torrent.files[0];
@@ -35,6 +34,7 @@ function doTorrent(infoHash){
 }
 
 function getData(link, infoHash, torrentOnly){
+  alert(localInstall);
   if (torrentOnly){
     console.log('is torrent only');
     doTorrent(infoHash);
@@ -85,7 +85,7 @@ function showOutput(dataType, ipfs, torrent){
   window.location = loc + '#modal-text';
 }
 
-var localInstall = false;
+var localInstall = true;
 
 var submitURI = 'https://www.chaoswebs.net/ipfs-paste/paste.php';
 var requestURI = 'https://www.chaoswebs.net/ipfs-paste/paste.php';
