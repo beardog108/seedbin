@@ -108,8 +108,8 @@ function showOutput(dataType, ipfs, torrent){
 
 var localInstall = true;
 
-var submitURI = 'https://www.chaoswebs.net/ipfs-paste/paste.php';
-var requestURI = 'https://www.chaoswebs.net/ipfs-paste/paste.php';
+var submitURI = 'https://www.chaoswebs.net/sb/paste.php';
+var requestURI = 'https://www.chaoswebs.net/sb/paste.php';
 var file = '';
 var text = '';
 var fd = new FormData();
