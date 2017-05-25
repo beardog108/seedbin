@@ -24,6 +24,7 @@ ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
 error_reporting(-1);
 */
+header('content-type: text/plain');
 header('access-control-allow-origin: *');
 
 $chk = curl_init('http://127.0.0.1:5001');
@@ -55,7 +56,7 @@ if (isset($_FILES["data"]["tmp_name"])){
   $key = substr($key, 0, strpos($key, "}") + 1);
   //echo $key;
   $ob = json_decode($key, true);
-  echo 'data: ' . $ob['Hash'];
+  echo 'data: ' . htmlentities($ob['Hash']);
   unlink($title);
 }
 else{

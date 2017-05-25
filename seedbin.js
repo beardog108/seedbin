@@ -55,7 +55,6 @@ function doTorrent(infoHash){
 }
 
 function getData(link, infoHash, torrentOnly){
-  alert(localInstall);
   if (torrentOnly){
     console.log('is torrent only');
     doTorrent(infoHash);
@@ -127,7 +126,7 @@ window.onload = function() {
     checkServer();
   });
   if (localStorage['seedbinURI'] == undefined){
-    localStorage['seedbinURI'] = 'https://www.chaoswebs.net/ipfs-paste/paste.php';
+    localStorage['seedbinURI'] = 'https://www.chaoswebs.net/sb/paste.php';
   }
   $('#serverURI').val(localStorage['seedbinURI']);
   submitURI = $('#serverURI').val();
