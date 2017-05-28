@@ -1,4 +1,4 @@
-# SeedBin 🌱📡🌐
+# SeedBin 🌱 📡 🌐
 
 ***Decentralized distributed pastebin using IPFS and WebTorrent.***
 
@@ -26,7 +26,7 @@ This software is p2p and therefore exposes your IP address and allows arbitrary 
 * Line numbers
 * Encrypted pastes
 
-## Donate 💲🖤
+## Donate 💲 🖤
 
 [Consider donating](https://www.chaoswebs.net/donate) to support development.
 
