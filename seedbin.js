@@ -28,6 +28,11 @@ function isJsonString(str){
     return true;
 }
 
+function showPeerNum(torrent){
+  $('#peerNumArea').css('display', 'block');
+  $('#peerNum').text(torrent.numPeers);
+}
+
 function checkServer(){
   $.get(localStorage['seedbinURI']).done(function(data){
     $('#serverUp').text('✅ Connection with server established');
@@ -40,6 +45,7 @@ function doTorrent(infoHash){
   //client = new WebTorrent();
   infoHash = 'magnet:?xt=urn:btih:' + infoHash + '&dn=Unnamed+Torrent+1495319406728&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com';
   client.add(infoHash, function (torrent) {
+    setInterval(showPeerNum, 1000, torrent);
         torrent.on('done', function(){
           var file2 = torrent.files[0];
           file2.getBuffer(function (err, buffer){
@@ -50,6 +56,10 @@ function doTorrent(infoHash){
           });
           console.log('done downloading ' + torrent.infoHash);
           window.location = loc + '#show-paste';
+        });
+        torrent.on('wire', function (wire, addr) {
+          console.log('wired!');
+            $.growl.notice({message: 'Connected with peer: ' + addr});
         });
   });
 }
@@ -83,15 +93,16 @@ function showOutput(dataType, ipfs, torrent){
         ipfs = '';
       }
       else{
+        $('#ipfsHash').val(ipfs);
         ipfs = ipfs + ',';
       }
       if (torrent.length != 40){
         torrent = '';
       }
       shareLink = '#' + ipfs + torrent;
-      $('#ipfsHash').val(ipfs);
       $('#webtorrentHash').val(torrent);
       $('#shareURI').val(loc + shareLink);
+      $('#genericShare').val(shareLink.replace('#', ''));
       window.location = loc + '#show-links';
       return;
     break;
@@ -173,8 +184,13 @@ window.onload = function() {
     fd.append('fname', 'paste.txt');
     fd.append('data', filee);
     client.seed(filee, function (torrent) {
+      setInterval(showPeerNum, 1000, torrent);
         console.log('Client is seeding ' + torrent.magnetURI);
         infoHash = torrent.infoHash;
+        torrent.on('wire', function (wire, addr) {
+          console.log('wired!');
+            $.growl.notice({message: 'Connected with peer: ' + addr});
+        });
     });
     $('#pasteform').attr('submit', submitURI);
 

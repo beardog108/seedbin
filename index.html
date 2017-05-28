@@ -41,7 +41,7 @@ License
         <div class="modal-inner">
             <header id="modal-label"><h2>Your Paste Is Ready!</h2></header>
             <div class="modal-content">
-              <pre id='pasteOutput'>y tho</pre>
+              <pre id='pasteOutput'>Nothing here, probably due to a refresh :)</pre>
             </div>
         </div>
         <a href="#!" class="modal-close" title="Close this modal" data-close="Close" data-dismiss="modal">?</a>
@@ -52,12 +52,15 @@ License
             <div class="modal-content">
               <label>IPFS: <input readonly id='ipfsHash' type='text'></label><br><br>
               <label>WebTorrent: <input readonly id='webtorrentHash' type='text'></label><br><br>
-              <label>Share: <input readonly id='shareURI' type='text'></label>
+              <label>Share URL: <input readonly id='shareURI' type='text'></label><br><br>
+              <label>Generic Share: <input readonly id='genericShare' type='text'></label>
+              <p>It is safe to close this modal.</p>
             </div>
         </div>
         <a href="#!" class="modal-close" title="Close this modal" data-close="Close" data-dismiss="modal">?</a>
     </section>
     <h1 class='center'>SeedBin</h1>
+    <div id='peerNumArea' class='center'>Torrent peers: <span id='peerNum'></span><br></div>
     <form method='post' id='pasteform'>
       <div class='center'><textarea class='smooth' name='text' required id='text' maxlength='5242880'></textarea></div>
       <br><br>
@@ -69,6 +72,7 @@ License
       <p id='serverUp' class='center'>❌ Connection with server not established</p>
       <p id='localDetected' class='center'>❌ No local gateway detected (will use fallback)!</p>
       <p id='webrtc' class='center'>❌ No WebRTC (no WebTorrent)</p>
+      <hr>
       <p>🖤 Made by <a href='https://www.chaoswebs.net'>Kevin Froman</a></p><span style="color: orange;">Ƀ</span>itcoin: <a style="color: black;" href='bitcoin:1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU'>1Hek4bVGsxSFA1QpTXryMZcP88agGMKfAU</a></footer>
   </body>
 </html>

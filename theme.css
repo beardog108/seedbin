@@ -42,3 +42,6 @@ footer{
   display: block;
   margin-top: 1em;
 }
+#peerNumArea{
+  display: none;
+}
