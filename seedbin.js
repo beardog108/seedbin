@@ -92,11 +92,11 @@ function getData(link, infoHash, torrentOnly){
     showOutput('paste', data);
   }).fail(function(data){
     if (webrtc){
-      $.growl.error('Could not get data from IPFS gateway(s), attempting WebTorrent');
+      $.growl.error({message: 'Could not get data from IPFS gateway(s), attempting WebTorrent'});
       doTorrent(infoHash);
     }
     else{
-      $.growl.warning('Could not get data from IPFS gateway(s)');
+      $.growl.warning({message: 'Could not get data from IPFS gateway(s)'});
     }
 })}
 
