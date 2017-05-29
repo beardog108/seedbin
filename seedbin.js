@@ -65,23 +65,39 @@ function doTorrent(infoHash){
 }
 
 function getData(link, infoHash, torrentOnly){
+  if (link.length < 40){
+    return;
+  }
   if (torrentOnly){
     console.log('is torrent only');
     doTorrent(infoHash);
     return;
   }
   if (localInstall){
+    // Make sure localInstall has been tested before proceeding, as if it hasn't then it will try to request it anyway
+    if (localInstallTested == false){
+      console.log('waiting for local install to be tested');
+      setTimeout(getData, 1000, link, infoHash, torrentOnly);
+      return false;
+    }
     link = 'http://127.0.0.1:8080/ipfs/' + link;
+    console.log(link);
   }
   else{
     link = requestURI + '?cat=' + link;
+    console.log(link);
   }
   $.get(link).done(function(data){
     $('#pasteOutput').text(data);
     showOutput('paste', data);
   }).fail(function(data){
-    $.growl.error('Could not get data from IPFS gateway(s), attempting WebTorrent');
-    doTorrent(infoHash);
+    if (webrtc){
+      $.growl.error('Could not get data from IPFS gateway(s), attempting WebTorrent');
+      doTorrent(infoHash);
+    }
+    else{
+      $.growl.warning('Could not get data from IPFS gateway(s)');
+    }
 })}
 
 function showOutput(dataType, ipfs, torrent){
@@ -117,7 +133,7 @@ function showOutput(dataType, ipfs, torrent){
 }
 
 var localInstall = true;
-
+var localInstallTested = false;
 var submitURI = 'https://www.chaoswebs.net/sb/paste.php';
 var requestURI = 'https://www.chaoswebs.net/sb/paste.php';
 var file = '';
@@ -146,11 +162,13 @@ window.onload = function() {
   $.ajax({url: 'http://127.0.0.1:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg?v=' + Math.random(),
         success: function (data, textstatus, xhr) {
           localInstall = true;
+          localInstallTested = true;
           $('#localDetected').text('✅ Detected local gateway!');
           if (location.protocol == 'https:'){$.growl.warning({message: 'This is a secure page.<br>There may be issues requesting localhost IPFS content.<br>Try disabling mixed content protection.'});}
         },
         error: function( xhr, status) {
           localInstall = false;
+          localInstallTested = true;
     	      }
         });
 
@@ -169,6 +187,9 @@ window.onload = function() {
       if (dataToGet[0].length == 40){
       getData('', dataToGet[0], true);
       }
+      else{
+        getData(dataToGet[0], '', false);
+      }
     }
     else{
       getData(dataToGet[0], dataToGet[1], false);
@@ -183,15 +204,17 @@ window.onload = function() {
     filee = new Blob([text], {type: 'text/plain'});
     fd.append('fname', 'paste.txt');
     fd.append('data', filee);
-    client.seed(filee, function (torrent) {
-      setInterval(showPeerNum, 1000, torrent);
-        console.log('Client is seeding ' + torrent.magnetURI);
-        infoHash = torrent.infoHash;
-        torrent.on('wire', function (wire, addr) {
-          console.log('wired!');
-            $.growl.notice({message: 'Connected with peer: ' + addr});
-        });
-    });
+    if (webrtc){
+      client.seed(filee, function (torrent) {
+        setInterval(showPeerNum, 1000, torrent);
+          console.log('Client is seeding ' + torrent.magnetURI);
+          infoHash = torrent.infoHash;
+          torrent.on('wire', function (wire, addr) {
+            console.log('wired!');
+              $.growl.notice({message: 'Connected with peer: ' + addr});
+          });
+      });
+    }
     $('#pasteform').attr('submit', submitURI);
 
     $.ajax({url: submitURI, type: 'POST', data: fd, processData: false, contentType: false, cache: false,
